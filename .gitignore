@@ -1,0 +1,6 @@
+*.gpg
+secrets.yml
+.idea/
+cue.mod/
+src/
+_*.cue
