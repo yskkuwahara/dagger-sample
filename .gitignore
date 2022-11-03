@@ -5,3 +5,4 @@ cue.mod/
 src/*
 !.keep
 _*.cue
+node_modules
