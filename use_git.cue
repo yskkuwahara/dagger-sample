@@ -8,7 +8,7 @@ import (
 )
 
 #Alpine: {
-	app: dagger.#FS
+	app:    dagger.#FS
 	_build: docker.#Build & {
 		steps: [
 			docker.#Pull & {
@@ -16,8 +16,8 @@ import (
 			},
 			docker.#Copy & {
 				contents: app
-				source: "./package.json"
-				dest: "/app/package.json"
+				source:   "./package.json"
+				dest:     "/app/package.json"
 			},
 			docker.#Run & {
 				command: {
@@ -31,7 +31,7 @@ import (
 					args: ["install"]
 				}
 				workdir: "/app"
-			}
+			},
 		]
 	}
 	image: _build.output
@@ -46,7 +46,7 @@ dagger.#Plan & {
 		}
 		filesystem: {
 			"./src": {
-				read: contents: dagger.#FS
+				read: contents:  dagger.#FS
 				write: contents: actions.gitPull.output
 			}
 			"./app": {
@@ -58,9 +58,9 @@ dagger.#Plan & {
 	actions: {
 		params: {
 			git: {
-				username: string
+				username:   string
 				repository: string
-				branch: string | *"develop"
+				branch:     string | *"develop"
 			}
 			tag: string | *"latest"
 			dockerhub: {
@@ -74,11 +74,11 @@ dagger.#Plan & {
 		}
 
 		gitPull: core.#GitPull & {
-            remote: params.git.repository
-            ref: params.git.branch
+			remote:     params.git.repository
+			ref:        params.git.branch
 			keepGitDir: true
 			auth: {
-                username: params.git.username
+				username: params.git.username
 				password: secrets.output.GIT_AUTH_TOKEN_FOR_DAGGER.contents
 			}
 		}
@@ -89,37 +89,37 @@ dagger.#Plan & {
 			always: true
 			mounts: "Local FS": {
 				contents: client.filesystem."./src".read.contents
-				dest: "/tmp/repository"
+				dest:     "/tmp/repository"
 			}
 		}
 
 		_local_dest: "localhost:5000/\(params.image_name):\(params.tag)"
-        _build: #Alpine & {
-            app: client.filesystem."./app".read.contents
-        }
+		_build:      #Alpine & {
+			app: client.filesystem."./app".read.contents
+		}
 
-        // Docker build and npm start. Show responses
-        // Before do this action at least once
-        // $ cd app && npm install
-        getSitemap: docker.#Run & {
-        	input: _build.image
-        	mounts: "app": {
-        		contents: client.filesystem."./app".read.contents
-        		dest: "/app"
-        	}
-        	workdir: "/app"
-        	command: {
-        		name: "npm"
-        		args: ["start"]
-        	}
-        }
+		// Docker build and npm start. Show responses
+		// Before do this action at least once
+		// $ cd app && npm install
+		getSitemap: docker.#Run & {
+			input: _build.image
+			mounts: "app": {
+				contents: client.filesystem."./app".read.contents
+				dest:     "/app"
+			}
+			workdir: "/app"
+			command: {
+				name: "npm"
+				args: ["start"]
+			}
+		}
 
-        // Local push
-        // Before do this action at least once
-        // $ docker run -d -p 5000:5000 registry
-        pushLocal: docker.#Push & {
-            image: _build.image
-            dest: _local_dest
-        }
+		// Local push
+		// Before do this action at least once
+		// $ docker run -d -p 5000:5000 registry
+		pushLocal: docker.#Push & {
+			image: _build.image
+			dest:  _local_dest
+		}
 	}
 }
