@@ -14,7 +14,7 @@ dagger.#Plan & {
 			stdout: dagger.#Secret
 		}
 		filesystem: {
-			"./src/git_test": {
+			"./src": {
 				read: contents: dagger.#FS
 				write: contents: actions.gitPull.output
 			}
@@ -48,7 +48,7 @@ dagger.#Plan & {
 				"""
 			always: true
 			mounts: "Local FS": {
-				contents: client.filesystem."./src/git_test".read.contents
+				contents: client.filesystem."./src".read.contents
 				dest: "/tmp/repository"
 			}
 		}
