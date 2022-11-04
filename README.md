@@ -27,7 +27,7 @@ dagger do list \
 cd app && npm install
 
 dagger do getSitemap \
-  --with 'actions: params: { git: { username: "yskkuwahara", repository: "https://github.com/medley-inc/job-medley-nbp.git", branch: "feature/425-nmw-renewal" }, dockerhub: username: "81971438500" }' \
+  --with 'actions: params: { git: { username: "xxxx", repository: "https://github.com/xxxxx/xxxxxxx.git", branch: "develop" }, dockerhub: username: "xxxxxxx" }' \
   --log-format plain
 ```
 
@@ -37,6 +37,6 @@ dagger do getSitemap \
 docker run -d -p 5000:5000 registry
 
 dagger do pushLocal \
-  --with 'actions: params: { git: { username: "yskkuwahara", repository: "https://github.com/medley-inc/job-medley-nbp.git", branch: "feature/425-nmw-renewal" }, dockerhub: username: "81971438500" }' \
+  --with 'actions: params: { git: { username: "xxxx", repository: "https://github.com/xxxxx/xxxxxxx.git", branch: "develop" }, dockerhub: username: "xxxxxxx" }' \
   --log-format plain
 ```
