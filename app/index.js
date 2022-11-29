@@ -3,8 +3,7 @@ import * as fs from 'fs'
 
 const getResponse = async () => {
     const response = await axios.get(
-        'https://job-medley.com/tips/sitemap.xml',
-        // 'https://news.yahoo.co.jp/rss/topics/top-picks.xml'
+        'https://news.yahoo.co.jp/rss/topics/top-picks.xml',
         {
             headers: {
                 'Cache-Control': 'no-cache',
